@@ -6,7 +6,7 @@ authors = [
 ]
 description = "Set of utils to help to work in data and analytics"
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: Apache Software License",
