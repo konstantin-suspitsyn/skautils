@@ -44,6 +44,7 @@ class CheckExeVersion:
         Проверяет является ли self.version последней версией
 
         :raises KeyError: если наш файл не имеет версии в toml-файле с версиями
+        :raises FileNotFoundError: если toml-файла нет
 
         :return:
             [0] - true, если версия в self.versions_toml_path == self.version
@@ -52,12 +53,17 @@ class CheckExeVersion:
         last_version: str
         is_last_version: bool = False
 
-        parsed_toml = toml.loads(self.versions_toml_path)
+        os.path.isfile(self.versions_toml_path)
+
+        parsed_toml = toml.load(self.versions_toml_path)
 
         if self.exe_name not in parsed_toml:
             raise KeyError(f"{self.exe_name} не имеет версии")
 
         last_version = parsed_toml[self.exe_name]
+
+        if last_version == self.version:
+            is_last_version = True
 
         return is_last_version, last_version
 
@@ -93,7 +99,7 @@ class CheckExeVersion:
         last_version: str
         is_last_version: bool
 
-        last_version, is_last_version = self.__get_last_version_and_check()
+        is_last_version, last_version = self.__get_last_version_and_check()
 
         if not is_last_version:
             if self.open_exe_folder:
