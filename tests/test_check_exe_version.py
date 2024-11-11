@@ -1,4 +1,5 @@
 import os.path
+from unittest.mock import patch
 
 import pytest
 
@@ -22,13 +23,18 @@ def test_no_toml_file():
     with pytest.raises(FileNotFoundError):
         CheckExeVersion(NAME_IN_FILE, REAL_VERSION, INCORRECT_LINK_TO_TOML, current_folder, TEST_MAIL, True)
 
+
 def test_wrong_version():
     with pytest.raises(RuntimeError):
-        CheckExeVersion(NAME_IN_FILE, NOT_REAL_VERSION, LINK_TO_TOML, current_folder, TEST_MAIL, True)
+        CheckExeVersion(NAME_IN_FILE, NOT_REAL_VERSION, LINK_TO_TOML, current_folder, TEST_MAIL, True, False)
 
 def test_no_exe_name():
     with pytest.raises(KeyError):
         CheckExeVersion(NO_NAME_IN_FILE, REAL_VERSION, LINK_TO_TOML, current_folder, TEST_MAIL, True)
 
 if __name__ == "__main__":
-    test_no_exe_name()
+    # test_do_nothing()
+    # test_no_toml_file()
+    test_wrong_version()
+    # test_no_exe_name()
+

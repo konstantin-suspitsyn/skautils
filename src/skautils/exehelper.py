@@ -15,9 +15,10 @@ class CheckExeVersion:
     exe_path: str
     creator_email: str
     open_exe_folder: bool
+    use_input: bool
 
     def __init__(self, exe_name: str, version: str, versions_toml_path: str, exe_path: str, creator_email: str,
-                 open_exe_folder: bool = False) -> None:
+                 open_exe_folder: bool = False, use_input: bool = True) -> None:
         """
         1. Инициализирует класс
         2. Проверяет версию
@@ -36,6 +37,7 @@ class CheckExeVersion:
         self.exe_path = exe_path
         self.creator_email = creator_email
         self.open_exe_folder = open_exe_folder
+        self.use_input = use_input
 
         self.check_last_version()
 
@@ -75,18 +77,17 @@ class CheckExeVersion:
         """
         os.startfile(self.exe_path)
 
-    def __stop_program(self, last_version: str) -> None:
+    def __stop_program(self, message: str) -> None:
         """
         Останавливает работу программы
-        :param last_version: последняя версия файла
+        :param message: сообщение об ошибке
 
         :raises RuntimeError: при вызове
 
         :return: ничего
         """
-        raise RuntimeError(f"Текущая версия {self.version} файла не является последней. Последняя версия {last_version}"
-                           f"\nПоследняя версия находится по пути: {self.exe_path}"
-                           f"\nПри возникновении вопросов, обратитесь к разработчику: {self.creator_email}")
+
+        raise RuntimeError(message)
 
     def check_last_version(self) -> None:
         """
@@ -101,7 +102,17 @@ class CheckExeVersion:
 
         is_last_version, last_version = self.__get_last_version_and_check()
 
+        message = f"Текущая версия {self.version} файла не является последней. Последняя версия {last_version}"\
+                  + f"\nПоследняя версия находится по пути: {self.exe_path}"\
+                  + f"\nПри возникновении вопросов, обратитесь к разработчику: {self.creator_email}"
+
         if not is_last_version:
             if self.open_exe_folder:
                 self.__open_folder_with_new_exe()
-            self.__stop_program(last_version)
+
+            print(message)
+
+            if self.use_input:
+                input("Нажмите Enter для выхода из программы")
+
+            self.__stop_program(message)

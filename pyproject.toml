@@ -1,6 +1,6 @@
 [project]
 name = "skautils"
-version = "0.0.1"
+version = "0.0.4"
 authors = [
   { name="Konstantin Suspitsyn", email="konstantin.suspitsun@xmail.ru" },
 ]
@@ -11,6 +11,10 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: Apache Software License",
     "Operating System :: Microsoft :: Windows",
+]
+
+dependencies = [
+  "toml>=0.10.2",
 ]
 
 [project.urls]
